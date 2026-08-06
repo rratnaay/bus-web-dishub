@@ -9,3 +9,145 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* =============================================
+   CUSTOM BASE STYLES
+   ============================================= */
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* =============================================
+   CUSTOM COMPONENT STYLES
+   ============================================= */
+@layer components {
+
+    /* === INPUT FIELD === */
+    .input-field {
+        @apply w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm placeholder-slate-400 outline-none transition-all duration-200 ease-in-out focus:border-blue-500 focus:ring-blue-100 focus:shadow-sm hover:border-slate-300;
+    }
+
+    /* === PRIMARY BUTTON === */
+    .btn-primary {
+        @apply w-full py-3 px-6 bg-blue-600 text-white font-semibold text-sm rounded-xl transition-all duration-200 ease-in-out cursor-pointer hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-md focus:outline-none focus:ring-blue-300;
+    }
+
+    /* === CARD === */
+    .card {
+        @apply bg-white rounded-2xl shadow-sm border border-slate-100 transition-shadow duration-200 hover:shadow-md;
+    }
+
+    /* === BADGE (blue) === */
+    .badge-blue {
+        @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700;
+    }
+
+    /* === BADGE (green) === */
+    .badge-green {
+        @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700;
+    }
+
+    /* === NAV LINK === */
+    .nav-link {
+        @apply text-slate-500 text-sm font-medium;
+    }
+
+    /* === INFO ROW === */
+    .info-row {
+        @apply flex items-start gap-3 py-3 border-b border-slate-50;
+    }
+
+    /* === ROUTE STEP === */
+    .route-step {
+        @apply flex items-start gap-3 py-2;
+    }
+}
+
+/* =============================================
+   CUSTOM UTILITY STYLES
+   ============================================= */
+@layer utilities {
+    .shadow-card {
+        box-shadow: 0 2px 12px -2px rgba(0, 0, 0, 0.06), 0 1px 4px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    .shadow-card-hover {
+        box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.10), 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Scrollbar slim */
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 99px;
+    }
+
+    /* Animate pulse subtle */
+    .animate-pulse-subtle {
+        animation: pulse-subtle 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-subtle {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.65;
+        }
+    }
+
+    /* Animate slide up */
+    .animate-slide-up {
+        animation: slide-up 0.4s ease-out both;
+    }
+
+    @keyframes slide-up {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Animate fade in */
+    .animate-fade-in {
+        animation: fade-in 0.3s ease-out both;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
