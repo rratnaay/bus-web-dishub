@@ -36,20 +36,20 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#"
-                       class="nav-link px-3 py-2 rounded-lg hover:bg-slate-50 transition-all duration-150">
+                    <a href="{{ route('routes.index') }}"
+                       class="nav-link {{ request()->routeIs('routes.*') ? 'active' : '' }} px-3 py-2 rounded-lg hover:bg-slate-50 transition-all duration-150">
                         Rute
                     </a>
                 </li>
                 <li>
-                    <a href="#"
-                       class="nav-link px-3 py-2 rounded-lg hover:bg-slate-50 transition-all duration-150">
+                    <a href="{{ route('stops.index') }}"
+                       class="nav-link {{ request()->routeIs('stops.*') ? 'active' : '' }} px-3 py-2 rounded-lg hover:bg-slate-50 transition-all duration-150">
                         Halte
                     </a>
                 </li>
                 <li>
-                    <a href="#"
-                       class="nav-link px-3 py-2 rounded-lg hover:bg-slate-50 transition-all duration-150">
+                    <a href="{{ route('about') }}"
+                       class="nav-link {{ request()->routeIs('about') ? 'active' : '' }} px-3 py-2 rounded-lg hover:bg-slate-50 transition-all duration-150">
                         Tentang
                     </a>
                 </li>
@@ -58,7 +58,7 @@
             {{-- ── Right Side: CTA + Mobile Toggle ── --}}
             <div class="flex items-center gap-3">
                 {{-- CTA Button (desktop) --}}
-                <a href="#"
+                <a href="{{ route('routes.index') }}#peta-rute"
                    class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm font-semibold
                           rounded-xl hover:bg-blue-700 hover:shadow-md hover:shadow-blue-200 hover:-translate-y-0.5
                           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1">
@@ -103,8 +103,8 @@
                 </svg>
                 Beranda
             </a>
-            <a href="#"
-               class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600
+            <a href="{{ route('routes.index') }}"
+               class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('routes.*') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}
                       hover:bg-slate-50 hover:text-slate-800 transition-colors duration-150">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -112,8 +112,8 @@
                 </svg>
                 Rute
             </a>
-            <a href="#"
-               class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600
+            <a href="{{ route('stops.index') }}"
+               class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('stops.*') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}
                       hover:bg-slate-50 hover:text-slate-800 transition-colors duration-150">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -122,8 +122,8 @@
                 </svg>
                 Halte
             </a>
-            <a href="#"
-               class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600
+            <a href="{{ route('about') }}"
+               class="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('about') ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}
                       hover:bg-slate-50 hover:text-slate-800 transition-colors duration-150">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -132,7 +132,7 @@
                 Tentang
             </a>
             <div class="pt-2 pb-1">
-                <a href="#"
+                <a href="{{ route('routes.index') }}#peta-rute"
                    class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold
                           rounded-xl hover:bg-blue-700 transition-colors duration-150">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

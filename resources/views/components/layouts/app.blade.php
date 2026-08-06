@@ -16,9 +16,8 @@
                 <a href="{{ route('home') }}" class="font-black text-xl text-teal-700">BIS<span class="text-amber-500">HUB</span>
                 </a>
                 <div class="flex gap-8 text-sm font-bold">
-                    <a href="{{ route('home') }}" class="text-[18px]">Beranda</a>
-                    <a href="{{ route('search') }}" class="text-[18px]">Cari Rute</a>
-                    @auth <a href="{{ route('admin.dashboard') }}">Admin</a>@endauth
+                    <a href="{{ route('home') }}">Beranda</a>
+                    <a href="{{ route('search') }}">Cari Rute</a>
                 </div>
                 </div></nav><main>{{ $slot }}</main><footer class="mt-16 bg-slate-900 text-slate-300">
                     <div class="max-w-6xl mx-auto px-5 py-8 text-sm flex justify-between">

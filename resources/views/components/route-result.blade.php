@@ -6,86 +6,10 @@
 <div class="space-y-4 animate-slide-up" style="animation-delay: 0.1s;">
 
     {{-- ─────────────────────────────────────────────
-         MAP PLACEHOLDER
+         PETA INTERAKTIF
          ───────────────────────────────────────────── --}}
     <div class="card shadow-card overflow-hidden">
-        <div class="map-placeholder h-64 relative">
-
-            {{-- Grid lines (visual map feel) --}}
-            <svg class="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
-                        <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#94a3b8" stroke-width="0.5"/>
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)"/>
-            </svg>
-
-            {{-- Background gradient --}}
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-slate-100 to-slate-200"></div>
-
-            {{-- Route line SVG simulation --}}
-            <svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                {{-- Road background (thick grey) --}}
-                <path d="M 60 200 Q 120 160 180 120 Q 240 80 300 90 Q 360 100 400 70"
-                      stroke="#cbd5e1" stroke-width="8" fill="none" stroke-linecap="round"/>
-                {{-- Route path (blue) --}}
-                <path d="M 60 200 Q 120 160 180 120 Q 240 80 300 90 Q 360 100 400 70"
-                      stroke="#5d3bf6" stroke-width="4" fill="none" stroke-linecap="round"
-                      stroke-dasharray="8 4" class="animate-pulse-subtle"/>
-                {{-- Road 2 --}}
-                <path d="M 80 240 L 250 190 L 380 160"
-                      stroke="#e2e8f0" stroke-width="6" fill="none" stroke-linecap="round"/>
-                <path d="M 20 120 L 150 140 L 250 110"
-                      stroke="#e2e8f0" stroke-width="5" fill="none" stroke-linecap="round"/>
-            </svg>
-
-            {{-- Origin pin --}}
-            <div class="absolute bottom-12 left-12 flex flex-col items-center gap-1">
-                <div class="w-5 h-5 bg-white border-3 border-blue-600 rounded-full shadow-md
-                            ring-4 ring-blue-100 z-10"></div>
-                <div class="bg-white text-xs font-semibold text-blue-700 px-2 py-0.5 rounded-full
-                            shadow-sm border border-blue-100 whitespace-nowrap">
-                    Terminal Purabaya
-                </div>
-            </div>
-
-            {{-- Destination pin --}}
-            <div class="absolute top-6 right-12 flex flex-col items-center gap-1">
-                <div class="text-red-500 drop-shadow-md">
-                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                </div>
-                <div class="bg-white text-xs font-semibold text-red-600 px-2 py-0.5 rounded-full
-                            shadow-sm border border-red-100 whitespace-nowrap">
-                    Tunjungan Plaza
-                </div>
-            </div>
-
-            {{-- Center label --}}
-            <div class="absolute inset-0 flex items-center justify-center">
-                <div class="bg-white/80 backdrop-blur-sm rounded-xl px-4 py-2 shadow-md border border-slate-200/50
-                            flex items-center gap-2">
-                    <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-                    </svg>
-                    <span class="text-xs font-semibold text-slate-600">Peta Rute Bus</span>
-                    <span class="badge-blue">Live</span>
-                </div>
-            </div>
-
-            {{-- Zoom controls --}}
-            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-1">
-                <button class="w-7 h-7 bg-white rounded-lg shadow-sm border border-slate-200 flex items-center justify-center
-                               text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors text-sm font-bold
-                               focus:outline-none" aria-label="Zoom in">+</button>
-                <button class="w-7 h-7 bg-white rounded-lg shadow-sm border border-slate-200 flex items-center justify-center
-                               text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors text-sm font-bold
-                               focus:outline-none" aria-label="Zoom out">−</button>
-            </div>
-        </div>
+        <div id="route-map" class="h-64" aria-label="Peta rute dan halte bus Surabaya"></div>
     </div>
 
     {{-- ─────────────────────────────────────────────
@@ -117,7 +41,7 @@
                 </div>
                 <div>
                     <p class="text-[10px] font-semibold text-blue-500 uppercase tracking-wider">Waktu</p>
-                    <p class="text-lg font-bold text-blue-700 leading-tight">43 <span class="text-sm font-semibold">menit</span></p>
+                    <p class="text-lg font-bold text-blue-700 leading-tight"><span id="route-minutes">—</span> <span class="text-sm font-semibold">menit</span></p>
                     <p class="text-[10px] text-blue-400">±5 menit</p>
                 </div>
             </div>
@@ -147,7 +71,7 @@
                 </div>
                 <div class="min-w-0">
                     <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Naik di</p>
-                    <p class="text-sm font-bold text-slate-700 leading-tight truncate">Halte Dukuh Menanggal</p>
+                    <p id="route-origin" class="text-sm font-bold text-slate-700 leading-tight truncate">Pilih halte asal</p>
                     <p class="text-[10px] text-slate-400">± 5 menit jalan kaki</p>
                 </div>
             </div>
@@ -162,7 +86,7 @@
                 </div>
                 <div class="min-w-0">
                     <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Turun di</p>
-                    <p class="text-sm font-bold text-slate-700 leading-tight truncate">Halte Kaliasin</p>
+                    <p id="route-destination" class="text-sm font-bold text-slate-700 leading-tight truncate">Pilih halte tujuan</p>
                     <p class="text-[10px] text-slate-400">± 3 menit jalan kaki</p>
                 </div>
             </div>
@@ -177,8 +101,8 @@
                 </svg>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="text-xs font-semibold text-slate-700">Surabaya Bus – Koridor R4</p>
-                <p class="text-[10px] text-slate-400 truncate">Terminal Purabaya → Tanjung Perak</p>
+                <p id="route-bus" class="text-xs font-semibold text-slate-700">Pilih rute perjalanan</p>
+                <p id="route-description" class="text-[10px] text-slate-400 truncate">Halte asal → halte tujuan</p>
             </div>
             <span class="badge-green flex-shrink-0">
                 <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 8 8">
@@ -210,7 +134,7 @@
                 </svg>
             </button>
 
-            <div id="journey-steps" class="hidden mt-3 space-y-0 animate-fade-in">
+            <div id="journey-steps" class="hidden mt-3 animate-fade-in flex flex-col gap-4" data-dynamic-steps>
 
                 @php
                 $steps = [
@@ -223,14 +147,14 @@
                 @endphp
 
                 @foreach ($steps as $i => $step)
-                <div class="route-step relative {{ !$loop->last ? 'pb-0' : '' }}">
+                <div class="route-step relative grid grid-cols-[1rem_minmax(0,1fr)] items-start gap-3">
                     {{-- Vertical connector line --}}
                     @unless ($loop->last)
-                    <div class="absolute left-[7px] top-6 bottom-0 w-px bg-slate-200"></div>
+                    <div class="absolute left-2 top-1 bottom-0 w-px bg-slate-200" aria-hidden="true"></div>
                     @endunless
 
                     {{-- Dot --}}
-                    <div class="relative z-10 mt-1 flex-shrink-0">
+                    <div class="relative z-10 mt-1 flex h-4 w-4 items-center justify-center">
                         @if ($step['type'] === 'bus')
                             <div class="w-4 h-4 bg-[#4D4AB6] rounded-full flex items-center justify-center ring-2 ring-blue-100">
                                 <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
@@ -248,10 +172,10 @@
                     </div>
 
                     {{-- Text --}}
-                    <div class="flex-1 min-w-0 -mt-4 ml-7">
-                        <p class="text-sm text-slate-700 font-medium leading-snug">{{ $step['text'] }}</p>
+                    <div class="min-w-0">
+                        <p class="text-sm font-medium leading-relaxed text-slate-700">{{ $step['text'] }}</p>
                         @if ($step['sub'])
-                            <p class="text-xs text-slate-400 mt-0.5">{{ $step['sub'] }}</p>
+                            <p class="mt-1 text-xs leading-relaxed text-slate-500">{{ $step['sub'] }}</p>
                         @endif
                     </div>
                 </div>

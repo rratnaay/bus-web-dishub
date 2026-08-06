@@ -19,7 +19,7 @@
     </div>
 
     {{-- Form --}}
-    <form action="#" method="GET" id="search-form" novalidate>
+    <form action="{{ route('search') }}" method="GET" id="search-form" novalidate>
         @csrf
         <div class="space-y-4">
 
@@ -38,19 +38,20 @@
                             <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
                         </svg>
                     </span>
-                    <input
-                        type="text"
+                    <select
                         id="lokasi"
-                        name="lokasi"
-                        autocomplete="off"
-                        placeholder="Contoh: Terminal Purabaya, Jl. Darmo..."
-                        value="{{ request('lokasi') }}"
-                        class="input-field pl-10 pr-10"
+                        name="origin"
+                        class="input-field appearance-none pl-10 pr-10"
                         aria-label="Masukkan lokasi asal Anda"
                     >
+                        <option value="">Pilih halte asal</option>
+                        @foreach ($stops as $stop)
+                            <option value="{{ $stop->id }}" @selected((string) request('origin') === (string) $stop->id)>{{ $stop->name }} ({{ $stop->code }})</option>
+                        @endforeach
+                    </select>
                     {{-- Clear button --}}
                     <button type="button"
-                            onclick="document.getElementById('lokasi').value=''"
+                            onclick="document.getElementById('lokasi').selectedIndex=0"
                             class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500
                                    transition-colors duration-150 focus:outline-none"
                             aria-label="Hapus lokasi asal">
@@ -93,19 +94,20 @@
                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                         </svg>
                     </span>
-                    <input
-                        type="text"
+                    <select
                         id="tujuan"
-                        name="tujuan"
-                        autocomplete="off"
-                        placeholder="Contoh: Tunjungan Plaza, ITS, Unair..."
-                        value="{{ request('tujuan') }}"
-                        class="input-field pl-10 pr-10"
+                        name="destination"
+                        class="input-field appearance-none pl-10 pr-10"
                         aria-label="Masukkan tujuan perjalanan Anda"
                     >
+                        <option value="">Pilih halte tujuan</option>
+                        @foreach ($stops as $stop)
+                            <option value="{{ $stop->id }}" @selected((string) request('destination') === (string) $stop->id)>{{ $stop->name }} ({{ $stop->code }})</option>
+                        @endforeach
+                    </select>
                     {{-- Clear button --}}
                     <button type="button"
-                            onclick="document.getElementById('tujuan').value=''"
+                            onclick="document.getElementById('tujuan').selectedIndex=0"
                             class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500
                                    transition-colors duration-150 focus:outline-none"
                             aria-label="Hapus tujuan">
@@ -196,8 +198,8 @@
         // Popular route shortcuts
         document.querySelectorAll('.popular-route').forEach(function (btn) {
             btn.addEventListener('click', function () {
-                if (lokasiInput) lokasiInput.value = this.dataset.dari;
-                if (tujuanInput) tujuanInput.value = this.dataset.ke;
+                if (lokasiInput) lokasiInput.value = Array.from(lokasiInput.options).find((option) => option.text.startsWith(this.dataset.dari))?.value || '';
+                if (tujuanInput) tujuanInput.value = Array.from(tujuanInput.options).find((option) => option.text.startsWith(this.dataset.ke))?.value || '';
                 lokasiInput.focus();
             });
         });

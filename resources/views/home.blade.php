@@ -220,7 +220,7 @@
                         </svg>
                         Cari Rute Sekarang
                     </a>
-                    <a href="#"
+                    <a href="{{ route('stops.index') }}"
                        class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-white/40 text-white font-semibold
                               text-sm rounded-xl hover:bg-white/10 hover:-translate-y-0.5 active:translate-y-0
                               transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/50">
@@ -236,3 +236,87 @@
     </section>
 
 @endsection
+
+@push('head')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    (function () {
+        const stops = @json($mapStops);
+        const form = document.getElementById('search-form');
+        const mapElement = document.getElementById('route-map');
+        let map;
+        let routeLayer;
+
+        const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' })[character]);
+
+        if (window.L && mapElement) {
+            map = L.map(mapElement).setView([-7.2756, 112.7508], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+            }).addTo(map);
+
+            const stopLayer = L.featureGroup().addTo(map);
+            stops.forEach((stop) => {
+                L.marker([Number(stop.latitude), Number(stop.longitude)])
+                    .bindPopup(`<strong>${escapeHtml(stop.name)}</strong><br>${escapeHtml(stop.code)}${stop.address ? `<br>${escapeHtml(stop.address)}` : ''}`)
+                    .addTo(stopLayer);
+            });
+            if (stops.length) map.fitBounds(stopLayer.getBounds(), { padding: [24, 24] });
+        }
+
+        const setResultMessage = (message) => {
+            document.getElementById('route-bus').textContent = message;
+            document.getElementById('route-description').textContent = 'Pilih halte asal dan tujuan untuk melihat rute.';
+        };
+
+        const updateRoute = (route) => {
+            document.getElementById('route-minutes').textContent = route.minutes || '—';
+            document.getElementById('route-origin').textContent = route.origin.name;
+            document.getElementById('route-destination').textContent = route.destination.name;
+            document.getElementById('route-bus').textContent = `${route.bus_name} – Koridor ${route.corridor}`;
+            document.getElementById('route-description').textContent = `${route.origin.name} → ${route.destination.name}`;
+
+            const steps = document.getElementById('journey-steps');
+            steps.innerHTML = [
+                `Naik di ${escapeHtml(route.origin.name)}`,
+                `Naik ${escapeHtml(route.bus_name)} Koridor ${escapeHtml(route.corridor)}`,
+                `Lewati ${route.stops.length} halte`,
+                `Turun di ${escapeHtml(route.destination.name)}`,
+            ].map((text, index) => `<div class="route-step relative grid grid-cols-[1rem_minmax(0,1fr)] items-start gap-3 ${index < 3 ? 'pb-4' : ''}"><div class="relative z-10 mt-0.5 flex h-4 w-4 items-center justify-center"><div class="w-4 h-4 ${index === 1 ? 'bg-[#4D4AB6]' : 'bg-slate-400'} rounded-full flex items-center justify-center ring-2 ring-slate-100"><div class="w-1.5 h-1.5 bg-white rounded-full"></div></div></div><div class="min-w-0"><p class="text-sm font-medium leading-normal text-slate-700">${text}</p></div></div>`).join('');
+
+            if (!map) return;
+            if (routeLayer) routeLayer.remove();
+            routeLayer = L.featureGroup().addTo(map);
+            const coordinates = route.stops.map((stop) => [Number(stop.latitude), Number(stop.longitude)]);
+            L.polyline(coordinates, { color: route.color || '#2563eb', weight: 5, opacity: 0.85 }).addTo(routeLayer);
+            route.stops.forEach((stop) => L.circleMarker([Number(stop.latitude), Number(stop.longitude)], { radius: 6, color: route.color || '#2563eb', fillOpacity: 1 }).bindPopup(`<strong>${escapeHtml(stop.name)}</strong><br>${escapeHtml(stop.code)}`).addTo(routeLayer));
+            if (coordinates.length) map.fitBounds(routeLayer.getBounds(), { padding: [28, 28] });
+        };
+
+        if (!form) return;
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const button = document.getElementById('btn-cari');
+            const originalLabel = button.innerHTML;
+            button.disabled = true;
+            button.textContent = 'Mencari rute...';
+
+            try {
+                const response = await fetch(`${form.action}?${new URLSearchParams(new FormData(form))}`, { headers: { Accept: 'application/json' } });
+                const payload = await response.json();
+                if (!response.ok) throw new Error(payload.message || 'Rute tidak dapat ditemukan.');
+                updateRoute(payload.route);
+            } catch (error) {
+                setResultMessage(error.message);
+            } finally {
+                button.disabled = false;
+                button.innerHTML = originalLabel;
+            }
+        });
+    })();
+</script>
+@endpush
